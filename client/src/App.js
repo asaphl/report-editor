@@ -39,8 +39,8 @@ function App() {
     <Application className="App">
       <DragDropContext onDragEnd={handleDrop}>
         <Toolbar />
-        { /*<Page />*/ }
-        <DbFormAddCountry></DbFormAddCountry>
+        <Page />
+        {/* <DbFormAddCountry></DbFormAddCountry> */}
         <BlockProperties />
       </DragDropContext>
       

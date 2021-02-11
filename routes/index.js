@@ -50,7 +50,6 @@ const db = require('../db');
       if (err) {
         return console.log(err.message);
       }
-      // get the last insert id
       res.send(`A row has been inserted with rowid `);
     });
     // res.send('Added Successfully! String is: ' + sqlString);

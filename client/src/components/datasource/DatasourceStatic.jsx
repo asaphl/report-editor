@@ -21,15 +21,6 @@ function DatasourceStatic(props) {
     return (
         <div>
             Content: <textarea value={content} onChange={handleChange} />
-            <button onClick={() => dispatch(updateBlock({
-                ...selectedBlock,
-                content: content,
-                data: {
-                    type: DATASOURCE_STATIC,
-                    content: content
-                }
-            }))}>Update</button>
-            <button onClick={() => dispatch(removeBlock(selectedBlock))}>Delete</button>
         </div>
     );
 }

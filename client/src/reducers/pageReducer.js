@@ -1,7 +1,7 @@
 import {BLOCK_TYPES, DEFAULT_BLOCKS} from '../constants/blockTypes';
 import { v4 as uuid} from 'uuid';
 import { ADD_BLOCK, REMOVE_BLOCK, REORDER_BLOCK, UPDATE_BLOCK } from '../constants/actions';
-import { DATASOURCE_STATIC, DATASOURCE_REMOTE, DATASOURCE_LOCAL } from '../constants/datasourceTypes';
+import { DATASOURCE_STATIC, DATASOURCE_DYNAMIC } from '../constants/datasourceTypes';
 
 const initState = [
     {
@@ -18,7 +18,7 @@ const initState = [
         type: BLOCK_TYPES.PARAGRAPH,
         content: 'lorLorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ut nisi at risus tempus porta at ac nibh. Duis molestie orci in odio commodo elementum. Ut pharetra finibus libero, non feugiat lacus viverra non. Duis ac metus in lorem rutrum consectetur. Phasellus lacinia fermentum massa. Etiam tincidunt aliquam orci, eu condimentum felis ultricies vel. Proin fermentum turpis ac ex ornare, id auctor est ullamcorper.em100',
         data: {
-            type: DATASOURCE_REMOTE,
+            type: DATASOURCE_DYNAMIC,
             src: 'Wikipedia',
             url: 'https://en.wikipedia.org/w/api.php',
             params: {
@@ -41,7 +41,7 @@ const initState = [
         type: BLOCK_TYPES.PARAGRAPH,
         content: 'lorLorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ut nisi at risus tempus porta at ac nibh. Duis molestie orci in odio commodo elementum. Ut pharetra finibus libero, non feugiat lacus viverra non. Duis ac metus in lorem rutrum consectetur. Phasellus lacinia fermentum massa. Etiam tincidunt aliquam orci, eu condimentum felis ultricies vel. Proin fermentum turpis ac ex ornare, id auctor est ullamcorper.em100',
         data: {
-            type: DATASOURCE_LOCAL,
+            type: DATASOURCE_DYNAMIC,
             table: 'Countries',
             column: 'History',
             where: {

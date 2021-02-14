@@ -1,4 +1,4 @@
-import { DATASOURCE_LOCAL, DATASOURCE_REMOTE, DATASOURCE_STATIC } from '../constants/datasourceTypes';
+import { DATASOURCE_DYNAMIC, DATASOURCE_STATIC } from '../constants/datasourceTypes';
 
 const initState = [
     {
@@ -8,7 +8,7 @@ const initState = [
     },
     {
         blockId: 1,
-        type: DATASOURCE_LOCAL,
+        type: DATASOURCE_DYNAMIC,
         source: {
             table: 'Countries',
             column: 'Country Name',
@@ -17,7 +17,7 @@ const initState = [
     },
     {
         blockId: 2,
-        type: DATASOURCE_REMOTE,
+        type: DATASOURCE_DYNAMIC,
         source: {
             url: 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Spain',
             field: 'title'

@@ -1,0 +1,33 @@
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectBlock, updateSelectedBlock } from '../../actions';
+import { DATASOURCE_DYNAMIC, DATASOURCE_STATIC } from '../../constants/datasourceTypes';
+
+function DatasourceType(props) {
+    // const selectedBlock = useSelector(state => state.selected);
+    const dispatch = useDispatch();
+
+    const setDataType = dataType => {
+        const updatedBlock = {
+            ...props,
+            data: {
+                ...props.data,
+                type: dataType
+            }
+        }
+
+        dispatch(updateSelectedBlock(updatedBlock));
+    }
+
+    return (
+        <div>
+            Datasource Type:
+            <select value={props.data.type} onChange={(e) => setDataType(e.target.value)}>
+                <option value={DATASOURCE_STATIC}>Static</option>
+                <option value={DATASOURCE_DYNAMIC}>Dynamic</option>
+            </select>
+        </div>
+    );
+}
+
+export default DatasourceType;

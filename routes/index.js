@@ -3,6 +3,15 @@ const router = express.Router();
 const url = require('url');
 const db = require('../db');
 
+const parse = (csv) => {
+  const entries = csv.split('\n').map(member => member.split(','));
+  const obj = {};
+  entries[0].forEach((header, i) => {
+    obj[header] = entries[1][i];
+  });
+  return obj;
+};
+
   router.get('/api/countries', (req, res) => {
     const query = 'SELECT Name FROM Countries';
     db.all(query, [], (err, rows) => {
@@ -11,35 +20,45 @@ const db = require('../db');
     });
   });
 
-  router.get('/api/texts', (req, res) => {
-    const query = `SELECT Name FROM Tables WHERE Type='Textual Data';`;
-    db.all(query, [], (err, rows) => {
+  router.get('/api/:countryName/texts', (req, res) => {
+    const textFields = [
+      'Name',
+      'History',
+      'Geography',
+      'Demographics',
+      'Economy'
+    ];
+    const query = `SELECT ${textFields.join(', ')} FROM Countries WHERE Name = '${req.params.countryName}'`;
+    db.get(query, (err, rows) => {
       if (err) res.send(err);
-      res.send(rows.map(row => row['Name']));
+      res.send(rows);
     });
   });
 
-  router.get('/api/texts/:countryName', (req, res) => {
-    const query = `SELECT Name FROM Tables WHERE Type='Textual Data';`;
-    db.all(query, [], (err, rows) => {
+  router.get('/api/:countryName/datasets  ', (req, res) => {
+    const statsFields = [
+      'GDP',
+      'Population'
+    ];
+    const query = `SELECT ${statsFields.join(', ')} FROM Countries WHERE Name = '${req.params.countryName}'`;
+    db.all(query, (err, rows) => {
       if (err) res.send(err);
-      res.send(rows.map(row => row['Name']));
+      const data = rows.map(row => {
+        formattedData = {};
+        for (let key in row) {
+          formattedData[key] = parse(row[key]);
+        }
+        return formattedData;
+      });
+      res.send(data);
     });
   });
 
-  router.get('/api/images', (req, res) => {
-    const query = `SELECT Name FROM Tables WHERE Type='Images';`;
+  router.get('/api/:countryName/images', (req, res) => {
+    const query = `SELECT Images.*, Countries.Name FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId LEFT JOIN Countries ON Countries.Id = [Country Images].CountryId WHERE Name = '${req.params.countryName}';`;
     db.all(query, [], (err, rows) => {
       if (err) res.send(err);
-      res.send(rows.map(row => row['Name']));
-    });
-  });
-
-  router.get('/api/numerical', (req, res) => {
-    const query = `SELECT Name FROM Tables WHERE Type='Numerical Data';`;
-    db.all(query, [], (err, rows) => {
-      if (err) res.send(err);
-      res.send(rows.map(row => row['Name']));
+      res.send(rows);
     });
   });
 

@@ -22,6 +22,7 @@ function App() {
   const handleDrop = result => {
     console.log((page[result.source.index]));
     dispatch(selectBlock(page[result.source.index]));
+    if (result.destination === null) return;
     if (result.destination.droppableId === 'page'){
       if (result.source.droppableId === 'page') {
         dispatch(reorderBlock(result.draggableId, result.source.index, result.destination.index));

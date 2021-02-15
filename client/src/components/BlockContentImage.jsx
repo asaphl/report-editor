@@ -8,9 +8,9 @@ function BlockContentImage(props) {
     if (!props.data.type) {
         renderedImage = <FontAwesomeIcon icon={faImage} />
     } else if (props.data.type === DATASOURCE_STATIC) {
-        renderedImage = (<img src={props.data.source} width='500' />);
+        renderedImage = (<img src={props.data.source} width='100%' />);
     } else if (props.data.type === DATASOURCE_DYNAMIC) {
-        if (props.data.source) renderedImage = <img src={props.data.source.path} width='500' />;
+        if (props.data.source) renderedImage = <img src={props.data.source.path} width='100%' />;
     }
 
     return (

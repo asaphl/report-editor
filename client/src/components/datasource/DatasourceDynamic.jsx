@@ -6,7 +6,8 @@ import { DATASOURCE_DYNAMIC } from '../../constants/datasourceTypes';
 import axios from 'axios';
 import { selectActiveValue } from '../../utils/uiFunctions';
 
-function DatasourceDynamic(selectedBlock) {
+function DatasourceDynamic(props) {
+    const selectedBlock = useSelector(state => state.selected);
     const dispatch = useDispatch();
 
     const [countries, setCountries] = useState([]);
@@ -19,7 +20,6 @@ function DatasourceDynamic(selectedBlock) {
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/countries/${selectedCountry}/${BLOCK_TYPE_SOURCE[selectedBlock.type]}`).then(res => setSources(res.data));
-        setSelectedSource('');
         dispatch(updateSelectedBlock({
             ...selectedBlock,
             data: {
@@ -30,20 +30,32 @@ function DatasourceDynamic(selectedBlock) {
         
     }, [selectedCountry]);
 
-    const [selectedSource, setSelectedSource] = useState((selectedBlock.data.source) ? selectedBlock.data.source.id : '' );
+    const [selectedSource, setSelectedSource] = useState((selectedBlock.data?.source?.id) ? selectedBlock.data.source.id : '' );
+    
     useEffect(() => {
         const newData = {
             source: sources.find(source => source.id == selectedSource), 
         };
-        // console.log('Dispatched update: ', newData);
-        dispatch(updateSelectedBlock({
-            ...selectedBlock,
-            data: {
-                ...selectedBlock.data,
-                ...newData
-            }
-        }))
+        if (newData.source) {
+            dispatch(updateSelectedBlock({
+                ...selectedBlock,
+                data: {
+                    ...selectedBlock.data,
+                    ...newData
+                }
+            }))
+        }
     }, [selectedSource]);
+
+    const getSource = () => {
+        try {
+            console.log(selectedBlock.data.source.id);
+            return selectActiveValue(selectedBlock.data.source.id);
+        } catch (err) {
+            console.log(err)
+            return '';
+        }
+    }
 
     return (
         <div>
@@ -56,7 +68,7 @@ function DatasourceDynamic(selectedBlock) {
             </div>
             <div>
                 Source:
-                <select value={selectActiveValue(selectedBlock.data.id)} onChange={(e) => setSelectedSource(e.target.value)}>
+                <select value={selectedSource} onChange={(e) => setSelectedSource(e.target.value)}>
                     <option value='' disabled>Select a data source</option>
                     {sources.map(source => <option value={source.id}>{source.title}</option>)}
                 </select>

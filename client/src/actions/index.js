@@ -1,5 +1,4 @@
 import { REORDER_BLOCK, ADD_BLOCK, SELECT_BLOCK, UPDATE_BLOCK, REMOVE_BLOCK, UPDATE_SELECTED_BLOCK } from "../constants/actions"
-import { v4 as uuid }  from 'uuid';
 
 export const reorderBlock = (blockId, sourceIndex, destinationIndex) => {
     return {

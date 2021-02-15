@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
-import datasourcesReducer from './datasourcesReducer';
-import pageReducer from './pageReducer';
+import reportReducer from './reportReducer';
 import selectedReducer from './selectedReducer';
 
 const rootReducer = combineReducers({
-  page: pageReducer,
-  datasources: datasourcesReducer,
+  report: reportReducer,
   selected: selectedReducer
 });
 

@@ -1,14 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
-import Page from './components/Page';
-import { DragDropContext, Draggable } from 'react-beautiful-dnd';
+import Report from './components/Report';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBlock, reorderBlock, selectBlock } from './actions';
 import Toolbar from './components/Toolbar';
 import styled from 'styled-components';
 import BlockProperties from './components/BlockProperties';
-import axios from 'axios';
-import DbFormAddCountry from './components/DbFormAddCountry';
 
 const Application = styled.div`
   display: grid;
@@ -17,30 +14,25 @@ const Application = styled.div`
 
 function App() {
   const dispatch = useDispatch();
-  const page = useSelector(state => state.page);
+  const report = useSelector(state => state.report);
 
   const handleDrop = result => {
-    console.log((page[result.source.index]));
-    dispatch(selectBlock(page[result.source.index]));
+    dispatch(selectBlock(report[result.source.index]));
     if (result.destination === null) return;
-    if (result.destination.droppableId === 'page'){
-      if (result.source.droppableId === 'page') {
+    if (result.destination.droppableId === 'report'){
+      if (result.source.droppableId === 'report') {
         dispatch(reorderBlock(result.draggableId, result.source.index, result.destination.index));
       } else {
         dispatch(addBlock(result.source.index, result.destination.index));
-      }
-      // dispatch(selectBlock(result.destination.index));
-      
+      }     
     }
-    
   }
 
   return (
     <Application className="App">
       <DragDropContext onDragEnd={handleDrop}>
         <Toolbar />
-        <Page />
-        {/* <DbFormAddCountry></DbFormAddCountry> */}
+        <Report />
         <BlockProperties />
       </DragDropContext>
       

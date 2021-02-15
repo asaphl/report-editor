@@ -1,5 +1,4 @@
-import Axios from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { DATASOURCE_STATIC, DATASOURCE_DYNAMIC } from '../../constants/datasourceTypes';
 import DatasourceStatic from './DatasourceStatic';

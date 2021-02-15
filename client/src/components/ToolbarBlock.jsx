@@ -1,8 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { BLOCK_TYPES } from '../constants/blockTypes';
 import { Draggable } from 'react-beautiful-dnd';
-import Block from './Block';
 import styled from 'styled-components';
 import BlockContent from './BlockContent';
 

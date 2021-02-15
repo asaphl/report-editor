@@ -3,7 +3,7 @@ const router = express.Router();
 const url = require('url');
 const db = require('../db');
 
-const parse = (csv) => {
+const parseCsv = (csv) => {
   const entries = csv.split('\n').map(member => member.split(','));
   const obj = {};
   entries[0].forEach((header, i) => {
@@ -12,66 +12,63 @@ const parse = (csv) => {
   return obj;
 };
 
+const keysToLowercase = rows => {
+  return rows.map(row => {
+    let key, keys = Object.keys(row);
+    let n = 0;
+    let lowercasedRow = {};
+    while (n < keys.length) {
+      key = keys[n];
+      lowercasedRow[key.toLowerCase()] = row[key];
+      n++;
+    }
+    return lowercasedRow;
+  })
+  
+}
+
   router.get('/api/countries', (req, res) => {
-    const query = 'SELECT Name FROM Countries';
-    db.all(query, [], (err, rows) => {
+    const sql = 'SELECT Name FROM Countries';
+    db.all(sql, [], (err, rows) => {
       if (err) res.send(err);
       res.send(rows.map(row => row['Name']));
     });
   });
 
-  router.get('/api/:countryName/texts', (req, res) => {
-    const textFields = [
-      'Name',
-      'History',
-      'Geography',
-      'Demographics',
-      'Economy'
-    ];
-    const query = `SELECT ${textFields.join(', ')} FROM Countries WHERE Name = '${req.params.countryName}'`;
-    db.get(query, (err, rows) => {
+  router.get('/api/countries/:countryName/texts', (req, res) => {
+    const sql = `SELECT Texts.* FROM Texts LEFT JOIN [Country Texts] ON Texts.Id = [Country Texts].TextId LEFT JOIN Countries ON Countries.Id = [Country Texts].CountryId WHERE Name = '${req.params.countryName}'`;
+    db.all(sql, (err, rows) => {
       if (err) res.send(err);
-      res.send(rows);
+      res.send(keysToLowercase(rows));
     });
   });
 
-  router.get('/api/:countryName/datasets  ', (req, res) => {
-    const statsFields = [
-      'GDP',
-      'Population'
-    ];
-    const query = `SELECT ${statsFields.join(', ')} FROM Countries WHERE Name = '${req.params.countryName}'`;
-    db.all(query, (err, rows) => {
+  router.all('/api/countries/:countryName/datasets', (req, res) => {
+    const sql = `SELECT Datasets.* FROM Datasets LEFT JOIN [Country Datasets] ON Datasets.Id = [Country Datasets].DatasetId LEFT JOIN Countries ON [Country Datasets].CountryId = Countries.Id WHERE Name = '${req.params.countryName}'`;
+    db.all(sql, (err, rows) => {
       if (err) res.send(err);
-      const data = rows.map(row => {
-        formattedData = {};
-        for (let key in row) {
-          formattedData[key] = parse(row[key]);
-        }
-        return formattedData;
+      const formattedRows = rows.map(row => {
+        return {
+          ...row,
+          'Data': parseCsv(row['Data'])
+        } 
       });
-      res.send(data);
+      res.send(keysToLowercase(formattedRows));
     });
   });
 
-  router.get('/api/:countryName/images', (req, res) => {
-    const query = `SELECT Images.*, Countries.Name FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId LEFT JOIN Countries ON Countries.Id = [Country Images].CountryId WHERE Name = '${req.params.countryName}';`;
-    db.all(query, [], (err, rows) => {
+  router.get('/api/countries/:countryName/images', (req, res) => {
+    const sql = `SELECT Images.* FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId LEFT JOIN Countries ON Countries.Id = [Country Images].CountryId WHERE Name = '${req.params.countryName}';`;
+    db.all(sql, [], (err, rows) => {
       if (err) res.send(err);
-      res.send(rows);
+      const images = rows.map(row => {
+        return {
+          ...row,
+          'Path': (req.protocol + '://' + req.get('host') + '/' + row['Path'])
+        }
+      });
+      res.send(keysToLowercase(images));
     });
-  });
-
-  router.post('/api/add-country', (req, res) => {
-    const { id, name, history, economy, geography, demographics, gdp, population} = req.body;
-    const sqlString = `INSERT INTO Countries (Id, Name, History, Economy, Geography, Demographics, GDP, Population) VALUES ('${id}', '${name}', '${history}', '${economy}', '${geography}', '${demographics}', '${gdp}', '${population}');`;
-    db.run(sqlString, function(err) {
-      if (err) {
-        return console.log(err.message);
-      }
-      res.send(`A row has been inserted with rowid `);
-    });
-    // res.send('Added Successfully! String is: ' + sqlString);
   });
 
 module.exports = router;

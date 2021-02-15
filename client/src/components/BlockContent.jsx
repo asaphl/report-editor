@@ -3,33 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { BLOCK_TYPES } from '../constants/blockTypes';
+import BlockContentHeadline from './BlockContentHeadline';
+import BlockContentImage from './BlockContentImage';
+import BlockContentText from './BlockContentText';
 
 function BlockContent(props) {
     const { type, content } = props;
     let renderedBlock;
     switch (type) {
         case BLOCK_TYPES.HEADLINE:
-            if (content) {
-                renderedBlock = <h3>{content}</h3>;
-            } else {
-                renderedBlock =  <FontAwesomeIcon icon={faHeading} />
-            }
-            
+            renderedBlock = <BlockContentHeadline {...props} />;
             break;
         case BLOCK_TYPES.PARAGRAPH:
-            if (content) {
-                renderedBlock = <p>{content}</p>;
-            } else {
-                renderedBlock = <FontAwesomeIcon icon={faAlignLeft} />
-            }
+            renderedBlock = <BlockContentText {...props} />;
             break;
         case BLOCK_TYPES.IMAGE:
-            if (content) {
-                renderedBlock = <img src={content} />;
-            } else {
-                renderedBlock = <FontAwesomeIcon icon={faImage} />
-            }
-            
+            renderedBlock = <BlockContentImage {...props} />;
             break;
     }
     return (

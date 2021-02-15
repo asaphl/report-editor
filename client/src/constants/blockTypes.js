@@ -8,29 +8,30 @@ export const BLOCK_TYPES = {
     IMAGE: 'IMAGE'
 }
 
+export const BLOCK_TYPE_SOURCE = {
+    HEADLINE: 'texts',
+    PARAGRAPH: 'texts',
+    IMAGE: 'images',
+}
+
+
 export const DEFAULT_BLOCKS = [
     {
         type: BLOCK_TYPES.HEADLINE,
-        content: '',
         data: {
-            type: DATASOURCE_STATIC,
-            content: ''
+            type: null
         }
     },
     {
         type: BLOCK_TYPES.PARAGRAPH,
-        content: '',
         data: {
-            type: DATASOURCE_STATIC,
-            content: ''
+            type: null
         }
     },
     {
         type: BLOCK_TYPES.IMAGE,
-        content: '',
         data: {
-            type: DATASOURCE_STATIC,
-            content: ''
+            type: null
         }
     },
 ];

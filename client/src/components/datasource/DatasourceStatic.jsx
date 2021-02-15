@@ -8,19 +8,22 @@ import { updateSelectedBlock } from '../../actions';
 function DatasourceStatic(props) {
     const selectedBlock = useSelector(state => state.selected);
     // const [text, setText] = useState(selectedBlock.content);
-    const { content } = selectedBlock;
+    const { source } = selectedBlock.data;
     const dispatch = useDispatch();
 
     const handleChange = e => {
         dispatch(updateSelectedBlock({
             ...selectedBlock,
-            content: e.target.value
+            data: {
+                ...selectedBlock.data,
+                source: e.target.value
+            }
         }));
     }
 
     return (
         <div>
-            Content: <textarea value={content} onChange={handleChange} />
+            Content: <textarea value={source} onChange={handleChange} />
         </div>
     );
 }

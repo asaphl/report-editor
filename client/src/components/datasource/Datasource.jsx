@@ -15,8 +15,8 @@ function Datasource(props) {
     if (!selectedBlock) return null;
 
     const renderDatasourcePanel = (type) => {
-        if (type === DATASOURCE_STATIC) return <DatasourceStatic />;
-        if (type === DATASOURCE_DYNAMIC) return <DatasourceDynamic />;
+        if (type === DATASOURCE_STATIC) return <DatasourceStatic {...selectedBlock} />;
+        if (type === DATASOURCE_DYNAMIC) return <DatasourceDynamic {...selectedBlock} />;
     }
 
     return (

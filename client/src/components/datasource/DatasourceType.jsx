@@ -21,8 +21,10 @@ function DatasourceType(props) {
 
     return (
         <div>
+        
             Datasource Type:
-            <select value={props.data.type} onChange={(e) => setDataType(e.target.value)}>
+            <select value={props.data.type ? props.data.type : ''} onChange={(e) => setDataType(e.target.value)}>
+                <option value='' disabled selected>Please select a data source</option>
                 <option value={DATASOURCE_STATIC}>Static</option>
                 <option value={DATASOURCE_DYNAMIC}>Dynamic</option>
             </select>

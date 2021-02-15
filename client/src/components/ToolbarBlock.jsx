@@ -11,8 +11,9 @@ const DraggableToolbarBlock = styled.div`
     margin: 5px;
     padding: 20px;
 `;
+
 function ToolbarBlock(props) {
-    const { content, type, index } = props;
+    const { type, index } = props;
     return (
         <Draggable draggableId={type} index={index}>
         { provided => (

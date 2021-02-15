@@ -19,9 +19,8 @@ function App() {
   const dispatch = useDispatch();
   const page = useSelector(state => state.page);
 
-  // axios.get('http://localhost:5000/api/hello').then(res => console.log(res));
-
   const handleDrop = result => {
+    console.log((page[result.source.index]));
     dispatch(selectBlock(page[result.source.index]));
     if (result.destination.droppableId === 'page'){
       if (result.source.droppableId === 'page') {

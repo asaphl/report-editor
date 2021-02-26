@@ -44,7 +44,7 @@ const keysToLowercase = rows => {
   });
 
   router.all('/api/countries/:countryId/datasets', (req, res) => {
-    const sql = `SELECT Datasets.* FROM Datasets LEFT JOIN [Country Datasets] ON Datasets.Id = [Country Datasets].DatasetId LEFT JOIN Countries ON [Country Datasets].CountryId = Countries.Id WHERE CountryId = '${req.params.countryId}'`;
+    const sql = `SELECT Datasets.* FROM Datasets LEFT JOIN [Country Datasets] ON Datasets.Id = [Country Datasets].DatasetId WHERE CountryId = '${req.params.countryId}'`;
     db.all(sql, (err, rows) => {
       if (err) res.send(err);
       const formattedRows = rows.map(row => {
@@ -58,7 +58,7 @@ const keysToLowercase = rows => {
   });
 
   router.get('/api/countries/:countryId/images', (req, res) => {
-    const sql = `SELECT Images.* FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId LEFT JOIN Countries ON Countries.Id = [Country Images].CountryId WHERE CountryId = '${req.params.countryId}';`;
+    const sql = `SELECT Images.* FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId WHERE CountryId = '${req.params.countryId}';`;
     db.all(sql, [], (err, rows) => {
       if (err) res.send(err);
       const images = rows.map(row => {

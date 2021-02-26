@@ -71,6 +71,31 @@ const keysToLowercase = rows => {
     });
   });
 
+  router.get('/api/reports', (req, res) => {
+    const sql = 'SELECT Name FROM Reports';
+    db.all(sql, (err, rows) => {
+      if (err) res.send(err);
+      res.send(rows.map(row => row['Name']));
+    });
+  })
+
+  router.post('/api/save', (req, res) => {
+    const sql = `INSERT INTO Reports(Name, Data) VALUES('${req.body.name}', '${JSON.stringify(req.body.report)}')`;
+    // res.send(sql);
+    db.run(sql, err => {
+      if (err) res.send(err);
+      res.send(`A row has been inserted with rowid ${this.lastID}`);
+    });
+  });
+
+  router.put('/api/save', (req, res) => {
+    const sql = `UPDATE Reports SET Data=${req.body.report} WHERE Name=${req.body.name}')`;
+    db.run(sql, err => {
+      if (err) res.send(err);
+      res.send(`A row has been edited with rowid ${this.lastID}`);
+    });
+  });
+
 module.exports = router;
 
 

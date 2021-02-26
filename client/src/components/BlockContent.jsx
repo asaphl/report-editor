@@ -17,6 +17,8 @@ function BlockContent(props) {
         case BLOCK_TYPES.IMAGE:
             renderedBlock = <BlockContentImage {...props} />;
             break;
+        default:
+            renderedBlock = null;
     }
     return (
         <div>

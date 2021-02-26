@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeBlock, updateBlock, updateSelectedBlock } from '../../actions';
-import { BLOCK_TYPES, BLOCK_TYPE_SOURCE } from '../../constants/blockTypes';
-import { DATASOURCE_DYNAMIC } from '../../constants/datasourceTypes';
+import { updateSelectedBlock } from '../../actions';
+import { BLOCK_TYPE_SOURCE } from '../../constants/blockTypes';
 import axios from 'axios';
-import { selectActiveValue } from '../../utils/uiFunctions';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
+import { loadSourceIntoBlockData } from '../../utils/blockFunctions';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        backgroundColor: 'white'
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      width: '80%',
+      textAlign: 'left'
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  }));
 
 function DatasourceDynamic(props) {
+    const classes = useStyles();
     const selectedBlock = useSelector(state => state.selected);
     const dispatch = useDispatch();
 
@@ -15,11 +30,15 @@ function DatasourceDynamic(props) {
         axios.get(`http://localhost:5000/api/countries`).then(res => setCountries(res.data));
     }, []);
 
-    const [selectedCountry, setSelectedCountry] = useState((selectedBlock.data.country) ? selectedBlock.data.country : '' );
     const [sources, setSources] = useState([])
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/countries/${selectedCountry}/${BLOCK_TYPE_SOURCE[selectedBlock.type]}`).then(res => setSources(res.data));
+        const selectedCountry = selectedBlock.data?.country;
+        if (!selectedCountry) return;
+        axios.get(`http://localhost:5000/api/countries/${selectedCountry}/${BLOCK_TYPE_SOURCE[selectedBlock.type]}`).then(res => setSources(res.data));        
+    }, [selectedBlock]);
+
+    const setSelectedCountry = (selectedCountry) => {
         dispatch(updateSelectedBlock({
             ...selectedBlock,
             data: {
@@ -27,51 +46,46 @@ function DatasourceDynamic(props) {
                 country: selectedCountry
             }
         }));
-        
-    }, [selectedCountry]);
+    }   
 
-    const [selectedSource, setSelectedSource] = useState((selectedBlock.data?.source?.id) ? selectedBlock.data.source.id : '' );
-    
-    useEffect(() => {
-        const newData = {
-            source: sources.find(source => source.id == selectedSource), 
-        };
-        if (newData.source) {
-            dispatch(updateSelectedBlock({
-                ...selectedBlock,
-                data: {
-                    ...selectedBlock.data,
-                    ...newData
-                }
-            }))
-        }
-    }, [selectedSource]);
-
-    const getSource = () => {
-        try {
-            console.log(selectedBlock.data.source.id);
-            return selectActiveValue(selectedBlock.data.source.id);
-        } catch (err) {
-            console.log(err)
-            return '';
-        }
+    const setSelectedSource = (selectedSource) => {
+        const newSource = sources.find(source => source.id === selectedSource);
+        if (newSource) dispatch(updateSelectedBlock(loadSourceIntoBlockData(selectedBlock, newSource)));
     }
 
     return (
-        <div>
+        <div className={classes.root}>
             <div>
-                Country: 
-                <select value={selectActiveValue(selectedBlock.data.country)} onChange={(e) => setSelectedCountry(e.target.value)}>
-                    <option value='' disabled>Select a country</option>
-                    {countries.map(country => <option>{country}</option>)}
-                </select>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="select-country-label">Country</InputLabel>
+                    <Select
+                    labelId="select-country-label"
+                    id="select-country"
+                    value={selectedBlock.data?.country || ""}
+                    onChange={(e) => setSelectedCountry(e.target.value)}
+                    label="Country"
+                    >
+                    <MenuItem value="" disabled>Select a country</MenuItem>
+                    {countries.map(country => <MenuItem value={country} key={country}>{country}</MenuItem>)}
+                    </Select>
+                </FormControl>
+
+
             </div>
             <div>
-                Source:
-                <select value={selectedSource} onChange={(e) => setSelectedSource(e.target.value)}>
-                    <option value='' disabled>Select a data source</option>
-                    {sources.map(source => <option value={source.id}>{source.title}</option>)}
-                </select>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="select-country-label">Source</InputLabel>
+                    <Select
+                    labelId="select-source-label"
+                    id="select-source"
+                    value={selectedBlock.data?.sourceId || ""}
+                    onChange={(e) => setSelectedSource(e.target.value)}
+                    label="Source"
+                    >
+                    <MenuItem value="" disabled>Select a source</MenuItem>
+                    {sources.map(source => <MenuItem value={source.id} key={source.id}>{source.title}</MenuItem>)}
+                    </Select>
+                </FormControl>
             </div>
         </div>
     );

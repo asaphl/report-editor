@@ -1,13 +1,16 @@
 import './App.css';
-import Report from './components/Report';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBlock, reorderBlock, selectBlock } from './actions';
 import Toolbar from './components/Toolbar';
 import styled from 'styled-components';
 import BlockProperties from './components/BlockProperties';
+import ReportContainer from './components/ReportContainer';
+import AppMenu from './components/AppMenu';
 
 const Application = styled.div`
+  height: 100vh;
+  width: 100vw;
   display: grid;
   grid-template-columns: 100px auto 200px;
 `;
@@ -29,14 +32,16 @@ function App() {
   }
 
   return (
-    <Application className="App">
+    <div className="App">
+      <AppMenu />
+      <Application>
       <DragDropContext onDragEnd={handleDrop}>
         <Toolbar />
-        <Report />
+        <ReportContainer />
         <BlockProperties />
       </DragDropContext>
-      
-    </Application>
+      </Application>
+    </div>
   );
 }
 

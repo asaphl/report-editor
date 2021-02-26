@@ -1,24 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import Actions from './datasource/Actions';
-import Datasource from './datasource/Datasource';
-import Preview from './datasource/Preview';
+import Actions from './Actions';
+import Datasource from './Datasource';
+import Preview from './Preview';
 
 const StyledRightPanel = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    display: grid;
+    grid-template-columns: 300px 300px auto 50px;
     background-color: rgb(245, 245, 245);
 `;
-//grid-template-rows: 250px auto 100px;
-function BlockProperties(props) {
+
+function RightPanel(props) {
     return (
         <StyledRightPanel>
             <Datasource />
             <Preview />
+            <div></div>
             <Actions />
         </StyledRightPanel>
     );
 }
 
-export default BlockProperties;
+export default RightPanel;

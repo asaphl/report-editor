@@ -9,16 +9,33 @@ const DraggableToolbarBlock = styled.div`
     padding: 20px;
 `;
 
+const Clone = styled(DraggableToolbarBlock)`
+    & > div {
+        display: inherit !important;
+    }
+`;
+
 function ToolbarBlock(props) {
     const { type, index } = props;
     return (
         <Draggable draggableId={type} index={index}>
-        { provided => (
+        { (provided, snapshot) => (
+            <React.Fragment>
             <DraggableToolbarBlock ref={provided.innerRef}
             {...provided.draggableProps}
-            {...provided.dragHandleProps}>
+            {...provided.dragHandleProps}
+            isDragging={snapshot.isDragging}>
                 <BlockContent {...props} />
             </DraggableToolbarBlock>
+            {
+                snapshot.isDragging && (
+                    <Clone>
+                        <BlockContent {...props} />
+                    </Clone>
+                )
+            }
+            </React.Fragment>
+            
         )}
         
         </Draggable>

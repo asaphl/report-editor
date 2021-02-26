@@ -1,21 +1,14 @@
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { DATASOURCE_STATIC, DATASOURCE_DYNAMIC } from '../constants/datasourceTypes';
 
 function BlockContentImage(props) {
-    let renderedImage = null;
-    if (!props.data.type) {
-        renderedImage = <FontAwesomeIcon icon={faImage} />
-    } else if (props.data.type === DATASOURCE_STATIC) {
-        renderedImage = (<img src={props.data.source} width='100%' />);
-    } else if (props.data.type === DATASOURCE_DYNAMIC) {
-        if (props.data.source) renderedImage = <img src={props.data.source.path} width='100%' />;
-    }
+    if (!props.data.type) return <FontAwesomeIcon icon={faImage} />;
 
     return (
         <React.Fragment>
-            { renderedImage }
+            <img src={ props.data.path } alt={ props.data.caption } width='100%' />
+                <sub>{ props.data.caption }</sub><sub dangerouslySetInnerHTML={ {__html: `. ${props.data.credit}`} } />
         </React.Fragment>
     );
 }

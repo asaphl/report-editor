@@ -8,7 +8,7 @@ function Block(props) {
     const dispatch = useDispatch();
 
     return (
-        <Draggable draggableId={props.id} index={props.index}>
+        <Draggable draggableId={props.id} index={props.index} key = {selectBlock.id}>
         {(provided) => (
             <div className='Block' ref={provided.innerRef}
                 {...provided.draggableProps}

@@ -10,7 +10,7 @@ const initState = (
       "type": "HEADLINE",
       "data": {
         "type": "DATASOURCE_STATIC",
-        "country": "Germany",
+        "country": "DEU",
         "content": "GERMANY"
       },
       "index": 0
@@ -20,7 +20,7 @@ const initState = (
       "type": "IMAGE",
       "data": {
         "type": "DATASOURCE_DYNAMIC",
-        "country": "Germany",
+        "country": "DEU",
         "sourceId": 4,
         "path": "http://localhost:5000/images/roman-kraft-g_gwdpsCVAY-unsplash.jpg",
         "caption": "Rothenburg ob der Tauber, Germany",
@@ -33,7 +33,7 @@ const initState = (
       "type": "HEADLINE",
       "data": {
         "type": "DATASOURCE_DYNAMIC",
-        "country": "Germany",
+        "country": "DEU",
         "sourceId": 2,
         "content": "Geography"
       },
@@ -44,7 +44,7 @@ const initState = (
       "type": "TEXT",
       "data": {
         "type": "DATASOURCE_DYNAMIC",
-        "country": "Germany",
+        "country": "DEU",
         "sourceId": 2,
         "content": "Germany is in Western and Central Europe, bordering Denmark to the north, Poland and the Czech Republic to the east, Austria to the southeast, and Switzerland to the south-southwest. France, Luxembourg and Belgium are situated to the west, with the Netherlands to the northwest. Germany is also bordered by the North Sea and, at the north-northeast, by the Baltic Sea. German territory covers 357,022 km2 (137,847 sq mi), consisting of 348,672 km2 (134,623 sq mi) of land and 8,350 km2 (3,224 sq mi) of water. It is the seventh largest country by area in Europe and the 62nd largest in the world.[4]"
       },

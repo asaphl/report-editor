@@ -66,7 +66,7 @@ function DatasourceDynamic(props) {
                     label="Country"
                     >
                     <MenuItem value="" disabled>Select a country</MenuItem>
-                    {countries.map(country => <MenuItem value={country} key={country}>{country}</MenuItem>)}
+                    {countries.map(country => <MenuItem value={country.id} key={country.name}>{country.name}</MenuItem>)}
                     </Select>
                 </FormControl>
 

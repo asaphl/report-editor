@@ -28,23 +28,23 @@ const keysToLowercase = rows => {
 }
 
   router.get('/api/countries', (req, res) => {
-    const sql = 'SELECT Name FROM Countries';
+    const sql = 'SELECT Id, Name FROM Countries';
     db.all(sql, [], (err, rows) => {
       if (err) res.send(err);
-      res.send(rows.map(row => row['Name']));
+      res.send(keysToLowercase(rows));
     });
   });
 
-  router.get('/api/countries/:countryName/texts', (req, res) => {
-    const sql = `SELECT Texts.* FROM Texts LEFT JOIN [Country Texts] ON Texts.Id = [Country Texts].TextId LEFT JOIN Countries ON Countries.Id = [Country Texts].CountryId WHERE Name = '${req.params.countryName}'`;
+  router.get('/api/countries/:countryId/texts', (req, res) => {
+    const sql = `SELECT Texts.* FROM Texts LEFT JOIN [Country Texts] ON Texts.Id = [Country Texts].TextId WHERE CountryId = '${req.params.countryId}'`;
     db.all(sql, (err, rows) => {
       if (err) res.send(err);
       res.send(keysToLowercase(rows));
     });
   });
 
-  router.all('/api/countries/:countryName/datasets', (req, res) => {
-    const sql = `SELECT Datasets.* FROM Datasets LEFT JOIN [Country Datasets] ON Datasets.Id = [Country Datasets].DatasetId LEFT JOIN Countries ON [Country Datasets].CountryId = Countries.Id WHERE Name = '${req.params.countryName}'`;
+  router.all('/api/countries/:countryId/datasets', (req, res) => {
+    const sql = `SELECT Datasets.* FROM Datasets LEFT JOIN [Country Datasets] ON Datasets.Id = [Country Datasets].DatasetId LEFT JOIN Countries ON [Country Datasets].CountryId = Countries.Id WHERE CountryId = '${req.params.countryId}'`;
     db.all(sql, (err, rows) => {
       if (err) res.send(err);
       const formattedRows = rows.map(row => {
@@ -57,8 +57,8 @@ const keysToLowercase = rows => {
     });
   });
 
-  router.get('/api/countries/:countryName/images', (req, res) => {
-    const sql = `SELECT Images.* FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId LEFT JOIN Countries ON Countries.Id = [Country Images].CountryId WHERE Name = '${req.params.countryName}';`;
+  router.get('/api/countries/:countryId/images', (req, res) => {
+    const sql = `SELECT Images.* FROM Images LEFT JOIN [Country Images] ON Images.Id = [Country Images].ImageId LEFT JOIN Countries ON Countries.Id = [Country Images].CountryId WHERE CountryId = '${req.params.countryId}';`;
     db.all(sql, [], (err, rows) => {
       if (err) res.send(err);
       const images = rows.map(row => {

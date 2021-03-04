@@ -8,6 +8,7 @@ import BlockProperties from './components/BlockProperties';
 import ReportContainer from './components/ReportContainer';
 import AppMenu from './components/AppMenu';
 import Toolbar2 from './components/Toolbar2';
+import { Grid, makeStyles } from '@material-ui/core';
 
 const Application = styled.div`
   height: 100vh;
@@ -16,7 +17,32 @@ const Application = styled.div`
   grid-template-columns: 100px auto 200px;
 `;
 
+const useStyles = makeStyles({
+  container: {
+    display: "grid",
+    height: "100vh",
+    width: "100vw",
+    gridTemplateColumns: "100px auto 200px",
+    gridTemplateRows: "auto 100%",
+    gridTemplateAreas: "'appbar appbar appbar' 'toolbar report block'"
+  },
+  appbar: {
+    gridArea: "appbar"
+  },
+  toolbar: {
+    gridArea: "toolbar"
+  },
+  report: {
+    gridArea: "report",
+    overflowY: "auto"
+  },
+  block: {
+    gridArea: "block"
+  }
+});
+
 function App() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const report = useSelector(state => state.report);
 
@@ -37,17 +63,43 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <AppMenu />
-      <Application>
-      <DragDropContext onDragStart={handleDrag} onDragEnd={handleDrop}>
+    <DragDropContext onDragStart={handleDrag} onDragEnd={handleDrop}>
+    <div className={classes.container}>
+      <div className={classes.appbar}>
+        <AppMenu />
+      </div>
+      <div className={classes.toolbar}>
         <Toolbar />
+      </div>
+      <div className={classes.report}>
         <ReportContainer />
+      </div>
+      <div className={classes.block}>
         <BlockProperties />
-      </DragDropContext>
-      </Application>
+      </div>
     </div>
+
+  </DragDropContext>
   );
 }
 
 export default App;
+
+
+// <DragDropContext onDragStart={handleDrag} onDragEnd={handleDrop}>
+// <Grid container spacing={0}>
+//   <Grid item xs={12}>
+//     <AppMenu />
+//   </Grid>
+//   <Grid item xs={1}>
+//     <Toolbar />
+//   </Grid>
+//   <Grid item xs={8}>
+//     <ReportContainer />
+//   </Grid>
+//   <Grid item xs={3}>
+//     <BlockProperties />
+//   </Grid>
+// </Grid>
+
+// </DragDropContext>

@@ -6,11 +6,10 @@ const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
-      height: '100%',
-      overflowY: 'scroll',
+      minHeight: '100%',
       backgroundColor: 'rgb(245, 245, 245)',
       '& > *': {
-        margin: 'auto',
+        margin: '50px auto',
         width: '90%',
         height: '90%'
       },
@@ -21,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         backgroundColor: 'white',
         borderRadius: 5,
+        textAlign: "center"
     }
   }));
 

@@ -1,5 +1,6 @@
-import { Button, Dialog, DialogTitle, List, ListItem, ListItemText } from "@material-ui/core";
-import axios from "axios";
+import { faFile } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Dialog, DialogTitle, DialogActions, List, ListItem, ListItemAvatar, ListItemText, Avatar } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 
 // const reports = [0, 1, 2, 3, 4];
@@ -13,7 +14,7 @@ function DialogOpenReport(props) {
   };
 
   const handleListItemClick = (value) => {
-    setCurrent(value);
+    onClose(value);
   };
 
   const renderList = () => {
@@ -26,6 +27,11 @@ function DialogOpenReport(props) {
           onClick={() => handleListItemClick(report.id)}
           key={report.id}
         >
+          <ListItemAvatar>
+            <Avatar>
+              <FontAwesomeIcon icon={faFile} />
+            </Avatar>
+          </ListItemAvatar>
           <ListItemText primary={report.name} />
         </ListItem>
       ))
@@ -36,12 +42,16 @@ function DialogOpenReport(props) {
       onClose={handleClose}
       aria-labelledby="dialog-open"
       open={open}
+      maxWidth="xs"
+      fullWidth
     >
       <DialogTitle id="dialog-open">Open Report</DialogTitle>
       <List>
         {renderList()}
       </List>
-      <Button onClick={() => onClose(current)}>Open</Button>
+      <DialogActions>
+      <Button onClick={() => onClose(current)} color="primary">Cancel</Button>
+      </DialogActions>
     </Dialog>
   );
 }

@@ -1,4 +1,4 @@
-import { faChevronCircleDown } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faChevronCircleRight, faEllipsisH, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   AppBar,
@@ -24,6 +24,10 @@ const useStyles = makeStyles({
     paddingRight: "15px",
     position: "inherit"
   },
+  title: {
+    flexGrow: 1,
+    textAlign: "left"
+  }
 });
 
 function AppMenu(props) {
@@ -88,7 +92,7 @@ function AppMenu(props) {
 
   const closeDialogSaveAs = (value) => {
     setSaveAsDialogVisibility(false);
-    saveReportAs(value);
+    if (value) saveReportAs(value);
     // closeMenu();
     // dispatch(asyncOpenReport(value))
   };
@@ -100,6 +104,9 @@ function AppMenu(props) {
   return (
     <AppBar className={classes.root}>
       <Toolbar>
+        <Typography variant="h6" className={classes.title}>
+          report-editor <FontAwesomeIcon icon={faChevronCircleRight} /> { reportMeta.name }
+        </Typography>
         <IconButton
           edge="start"
           className={classes.menuButton}
@@ -109,7 +116,7 @@ function AppMenu(props) {
           aria-haspopup="true"
           onClick={handleClick}
         >
-          <FontAwesomeIcon icon={faChevronCircleDown} />
+          <FontAwesomeIcon icon={faBars} />
         </IconButton>
         <Menu
           id="simple-menu"
@@ -123,9 +130,6 @@ function AppMenu(props) {
           <MenuItem onClick={openDialogSaveAs}>Save As...</MenuItem>
           <MenuItem onClick={printReport}>Print (or to PDF)</MenuItem>
         </Menu>
-        <Typography variant="h6" className={classes.title}>
-          report-editor... { reportMeta.name }
-        </Typography>
       </Toolbar>
       <DialogOpenReport selectedValue={1} open={openDialogVisibility} onClose={closeDialogOpenReport} reports={reports}/>
       <DialogSaveReport open={saveAsDialogVisibility} onClose={closeDialogSaveAs}/>

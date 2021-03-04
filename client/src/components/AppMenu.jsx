@@ -16,6 +16,7 @@ import DialogOpenReport from './DialogOpenReport';
 import { OPEN_REPORT } from "../constants/actions";
 import { asyncOpenReport, openReport } from "../actions";
 import DialogSaveReport from "./DialogSaveReport";
+import printJS from "print-js";
 
 const useStyles = makeStyles({
   root: {
@@ -92,6 +93,10 @@ function AppMenu(props) {
     // dispatch(asyncOpenReport(value))
   };
 
+  const printReport = () => {
+    printJS('print-report', 'html');
+  }
+
   return (
     <AppBar className={classes.root}>
       <Toolbar>
@@ -116,7 +121,7 @@ function AppMenu(props) {
           <MenuItem onClick={openDialogOpenReport}>Open Report</MenuItem>
           <MenuItem onClick={saveReport}>Save Report</MenuItem>
           <MenuItem onClick={openDialogSaveAs}>Save As...</MenuItem>
-          <MenuItem onClick={closeMenu}>Export</MenuItem>
+          <MenuItem onClick={printReport}>Print (or to PDF)</MenuItem>
         </Menu>
         <Typography variant="h6" className={classes.title}>
           report-editor... { reportMeta.name }

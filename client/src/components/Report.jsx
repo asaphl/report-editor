@@ -9,7 +9,7 @@ function Report(props) {
     return (
         <Droppable droppableId="report">
         {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <div id="print-report" ref={provided.innerRef} {...provided.droppableProps}>
                 {report.map((block, i) => <Block {...block} index={i} key={block.id} />)}
                 {provided.placeholder}
             </div>

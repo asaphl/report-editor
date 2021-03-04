@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import BlockProperties from './components/BlockProperties';
 import ReportContainer from './components/ReportContainer';
 import AppMenu from './components/AppMenu';
+import Toolbar2 from './components/Toolbar2';
 
 const Application = styled.div`
   height: 100vh;
@@ -18,6 +19,10 @@ const Application = styled.div`
 function App() {
   const dispatch = useDispatch();
   const report = useSelector(state => state.report);
+
+  const handleDrag = res => {
+    // console.log(res)
+  }
 
   const handleDrop = result => {
     dispatch(selectBlock(report[result.source.index]));
@@ -35,7 +40,7 @@ function App() {
     <div className="App">
       <AppMenu />
       <Application>
-      <DragDropContext onDragEnd={handleDrop}>
+      <DragDropContext onDragStart={handleDrag} onDragEnd={handleDrop}>
         <Toolbar />
         <ReportContainer />
         <BlockProperties />

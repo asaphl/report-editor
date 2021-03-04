@@ -72,15 +72,23 @@ const keysToLowercase = rows => {
   });
 
   router.get('/api/reports', (req, res) => {
-    const sql = 'SELECT Name FROM Reports';
+    const sql = 'SELECT Id, Name FROM Reports';
     db.all(sql, (err, rows) => {
       if (err) res.send(err);
-      res.send(rows.map(row => row['Name']));
+      res.send(keysToLowercase(rows));
+    });
+  })
+
+  router.get('/api/reports/:reportId', (req, res) => {
+    const sql = `SELECT * FROM Reports WHERE Id=${req.params.reportId}`;
+    db.all(sql, (err, rows) => {
+      if (err) res.send(err);
+      res.send(keysToLowercase(rows));
     });
   })
 
   router.post('/api/save', (req, res) => {
-    const sql = `INSERT INTO Reports(Name, Data) VALUES('${req.body.name}', '${JSON.stringify(req.body.report)}')`;
+    const sql = `INSERT INTO Reports(Name, Data) VALUES('${req.body.name}', '${req.body.report.replace("'", "''")}')`;
     // res.send(sql);
     db.run(sql, err => {
       if (err) res.send(err);
@@ -89,9 +97,9 @@ const keysToLowercase = rows => {
   });
 
   router.put('/api/save', (req, res) => {
-    const sql = `UPDATE Reports SET Data=${req.body.report} WHERE Name=${req.body.name}')`;
+    const sql = `UPDATE Reports SET Data='${req.body.report.replace("'", "''")}' WHERE Name='${req.body.name}'`;
     db.run(sql, err => {
-      if (err) res.send(err);
+      if (err) res.send("error!");
       res.send(`A row has been edited with rowid ${this.lastID}`);
     });
   });

@@ -1,3 +1,4 @@
+export const OPEN_REPORT = 'OPEN_REPORT';
 export const REORDER_BLOCK = 'REORDER_BLOCK';
 export const ADD_BLOCK = 'ADD_BLOCK';
 export const SELECT_BLOCK = 'SELECT_BLOCK';

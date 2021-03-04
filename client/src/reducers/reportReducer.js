@@ -1,6 +1,6 @@
 import { DEFAULT_BLOCKS } from '../constants/blockTypes';
 import { v4 as uuid } from 'uuid';
-import { ADD_BLOCK, REMOVE_BLOCK, REORDER_BLOCK, UPDATE_BLOCK } from '../constants/actions';
+import { ADD_BLOCK, OPEN_REPORT, REMOVE_BLOCK, REORDER_BLOCK, UPDATE_BLOCK } from '../constants/actions';
 
 
 const initState = (
@@ -57,6 +57,9 @@ const initState = (
 export default function reportReducer(state = initState, action) {
     let newState = Array.from(state);
     switch(action.type){
+        case OPEN_REPORT:
+          newState = JSON.parse(action.payload.data);
+          return newState;
         case REORDER_BLOCK:
             const block = state[action.source];
             newState.splice(action.source, 1);

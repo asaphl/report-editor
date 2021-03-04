@@ -9,9 +9,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import DialogOpenReport from './DialogOpenReport';
+import { OPEN_REPORT } from "../constants/actions";
+import { asyncOpenReport, openReport } from "../actions";
+import DialogSaveReport from "./DialogSaveReport";
 
 const useStyles = makeStyles({
   root: {
@@ -22,36 +26,70 @@ const useStyles = makeStyles({
 });
 
 function AppMenu(props) {
+  const [reports, setReports] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/reports")
+      .then((res) => setReports(res.data));
+  });
   const classes = useStyles();
+  const reportMeta = useSelector((state) => state.reportMeta);
   const report = useSelector((state) => state.report);
+  const dispatch = useDispatch();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  // const [open, setOpen] = React.useState(false);
-  // const [selectedValue, setSelectedValue] = React.useState(null);
+  const [anchorMenu, setAnchorMenu] = React.useState(null);
+  const [openDialogVisibility, setOpenDialogVisibility] = React.useState(false);
+  const [saveAsDialogVisibility, setSaveAsDialogVisibility] = React.useState(false);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorMenu(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const closeMenu = () => {
+    setAnchorMenu(null);
   };
 
   const saveReport = () => {
     const reportData = {
-      name: "spain",
-      report: [...report],
+      name: reportMeta.name,
+      report: JSON.stringify([...report]),
+    };
+    axios
+      .put("http://localhost:5000/api/save", reportData)
+      .then((res) => console.log(res.data));
+    closeMenu();
+  };
+
+  const saveReportAs = (filename) => {
+    const reportData = {
+      name: filename,
+      report: JSON.stringify([...report]),
     };
     axios
       .post("http://localhost:5000/api/save", reportData)
       .then((res) => console.log(res.data));
-    handleClose();
+    closeMenu();
   };
 
-  const openReport = (e) => {
-    // setModal(<ModalContainer visibility={true} />);
-    handleClose();
+  const openDialogOpenReport = (event) => {
+    setOpenDialogVisibility(true);
+  };
+
+  const closeDialogOpenReport = (value) => {
+    setOpenDialogVisibility(false);
+    closeMenu();
+    dispatch(asyncOpenReport(value))
+  };
+
+  const openDialogSaveAs = (event) => {
+    setSaveAsDialogVisibility(true);
+  };
+
+  const closeDialogSaveAs = (value) => {
+    setSaveAsDialogVisibility(false);
+    saveReportAs(value);
+    // closeMenu();
+    // dispatch(asyncOpenReport(value))
   };
 
   return (
@@ -61,8 +99,8 @@ function AppMenu(props) {
           edge="start"
           className={classes.menuButton}
           color="inherit"
-          aria-label="simple-menu"
-          aria-controls="simple-menu"
+          aria-label="app-menu"
+          aria-controls="app-menu"
           aria-haspopup="true"
           onClick={handleClick}
         >
@@ -70,20 +108,22 @@ function AppMenu(props) {
         </IconButton>
         <Menu
           id="simple-menu"
-          anchorEl={anchorEl}
+          anchorEl={anchorMenu}
           keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
+          open={Boolean(anchorMenu)}
+          onClose={closeMenu}
         >
-          <MenuItem onClick={openReport}>Open Report</MenuItem>
+          <MenuItem onClick={openDialogOpenReport}>Open Report</MenuItem>
           <MenuItem onClick={saveReport}>Save Report</MenuItem>
-          <MenuItem onClick={handleClose}>Export</MenuItem>
+          <MenuItem onClick={openDialogSaveAs}>Save As...</MenuItem>
+          <MenuItem onClick={closeMenu}>Export</MenuItem>
         </Menu>
         <Typography variant="h6" className={classes.title}>
-          report-editor
+          report-editor... { reportMeta.name }
         </Typography>
       </Toolbar>
-      {/*<DialogOpenReport selectedValue={selectedValue} open={open} onClose={handleClose} />*/}
+      <DialogOpenReport selectedValue={1} open={openDialogVisibility} onClose={closeDialogOpenReport} reports={reports}/>
+      <DialogSaveReport open={saveAsDialogVisibility} onClose={closeDialogSaveAs}/>
     </AppBar>
   );
 }

@@ -1,4 +1,17 @@
-import { REORDER_BLOCK, ADD_BLOCK, SELECT_BLOCK, UPDATE_BLOCK, REMOVE_BLOCK, UPDATE_SELECTED_BLOCK } from "../constants/actions"
+import { REORDER_BLOCK, ADD_BLOCK, SELECT_BLOCK, UPDATE_BLOCK, REMOVE_BLOCK, UPDATE_SELECTED_BLOCK, OPEN_REPORT } from "../constants/actions"
+
+export const asyncOpenReport = (reportId) =>
+  (dispatch, getState, axios) => axios.get(`/api/reports/${reportId}`)
+    .then(res => dispatch(openReport(res.data[0])));
+
+export const openReport = (report) => {
+    return {
+        type: OPEN_REPORT,
+        payload: {
+            ...report
+        }
+    }
+}
 
 export const reorderBlock = (blockId, sourceIndex, destinationIndex) => {
     return {

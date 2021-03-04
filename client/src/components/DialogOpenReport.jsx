@@ -2,44 +2,46 @@ import { Button, Dialog, DialogTitle, List, ListItem, ListItemText } from "@mate
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
+// const reports = [0, 1, 2, 3, 4];
+
 function DialogOpenReport(props) {
-  const { onClose, selectedValue, open } = props;
-
-  const [reports, setReports] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/reports")
-      .then((res) => setReports(res));
-  });
+  const { onClose, selectedValue, open, reports } = props;
+  const [ current, setCurrent ] =  useState(selectedValue)
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
   const handleListItemClick = (value) => {
-    onClose(value);
+    setCurrent(value);
   };
 
+  const renderList = () => {
+    if (!reports) {
+      return null;
+    } else {
+      return reports.map((report) => (
+        <ListItem
+          button
+          onClick={() => handleListItemClick(report.id)}
+          key={report.id}
+        >
+          <ListItemText primary={report.name} />
+        </ListItem>
+      ))
+    }
+  }
   return (
     <Dialog
       onClose={handleClose}
-      aria-labelledby="simple-dialog-title"
+      aria-labelledby="dialog-open"
       open={open}
     >
-      <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+      <DialogTitle id="dialog-open">Open Report</DialogTitle>
       <List>
-        {reports.map((report) => (
-          <ListItem
-            button
-            onClick={() => handleListItemClick(report)}
-            key={report}
-          >
-            <ListItemText primary={report} />
-          </ListItem>
-        ))}
+        {renderList()}
       </List>
-      <Button>Open</Button>
+      <Button onClick={() => onClose(current)}>Open</Button>
     </Dialog>
   );
 }

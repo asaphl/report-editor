@@ -1,32 +1,40 @@
-import React from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import styled from 'styled-components';
-import { DEFAULT_BLOCKS } from '../constants/blockTypes';
-import ToolbarBlock from './ToolbarBlock';
+import { Box, makeStyles } from "@material-ui/core";
+import React from "react";
+import { Droppable, Draggable } from "react-beautiful-dnd";
+import { DEFAULT_BLOCKS } from "../constants/blockTypes";
+import ToolbarBlock from "./ToolbarBlock";
 
-const Clone = styled.div`
-    + div {
-        display: none !important
-    }
-`;
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "white",
+  },
+});
+
 function Toolbar(props) {
+  const classes = useStyles();
 
-    const c = {
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'static',
-        minHeight: '500px'
-    }
-    return (
-        <Droppable droppableId='toolbar' isDropDisabled={true}>
-        { (provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-                { DEFAULT_BLOCKS.map((defaultBlock, index) => <ToolbarBlock {...defaultBlock} key={defaultBlock.type} index={index} /> ) }
-                { provided.placeholder }
-            </div>
-        )}  
-        </Droppable>
-    );
+  return (
+    <Droppable droppableId="toolbar" isDropDisabled={true}>
+      {(provided) => (
+        <Box
+          className={classes.container}
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          {DEFAULT_BLOCKS.map((defaultBlock, index) => (
+            <ToolbarBlock
+              {...defaultBlock}
+              key={defaultBlock.type}
+              index={index}
+            />
+          ))}
+          {provided.placeholder}
+        </Box>
+      )}
+    </Droppable>
+  );
 }
 
 export default Toolbar;

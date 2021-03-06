@@ -1,30 +1,26 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem, ListItemText, makeStyles, TextField } from "@material-ui/core";
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-
-// const reports = [0, 1, 2, 3, 4];
-const useStyles = makeStyles({
-
-})
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from "@material-ui/core";
+import React, { useState } from "react";
 
 function DialogSaveReport(props) {
-  const classes = useStyles();
   const { onClose, open } = props;
-  const [ filename, setFilename ] =  useState('')
+  const [filename, setFilename] = useState("");
 
-  const handleClose = () => {
-    onClose();
-  };
-
-  const handleSubmit = (value) => {
-    setFilename(value);
-    onClose(filename);
+  const closeDialog = (event, save = false) => {
+    onClose(save ? filename : null);
   };
 
   return (
     <Dialog
       maxWidth="md"
-      onClose={handleClose}
+      onClose={closeDialog}
       aria-labelledby="dialog-save-as"
       open={open}
     >
@@ -35,7 +31,7 @@ function DialogSaveReport(props) {
         </DialogContentText>
         <TextField
           value={filename}
-          onChange={e => setFilename(e.target.value)}
+          onChange={event => setFilename(event.target.value)}
           autoFocus
           id="name"
           label="File Name"
@@ -44,12 +40,13 @@ function DialogSaveReport(props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={closeDialog} color="primary">
           Cancel
         </Button>
-        <Button onClick={() => onClose(filename)} color="primary">Save</Button>
+        <Button onClick={(event) => closeDialog(event, true)} color="primary">
+          Save
+        </Button>
       </DialogActions>
-      
     </Dialog>
   );
 }

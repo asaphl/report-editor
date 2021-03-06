@@ -1,75 +1,46 @@
-import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { selectBlock } from '../actions';
-import BlockContent from './BlockContent';
+import { makeStyles } from "@material-ui/core";
+import React from "react";
+import { Draggable } from "react-beautiful-dnd";
+import BlockContent from "./BlockContent";
 
-const DraggableToolbarBlock = styled.div`
-    border: 2px solid indigo;
-    padding: 20px;
-    background-color: white;
-    margin-bottom:10px;
-
-    // display: flex;
-    // user-select: none;
-    // padding: 0.5rem;
-    // margin: 0 0 0.5rem 0;
-    // align-items: flex-start;
-    // align-content: flex-start;
-    // line-height: 1.5;
-    // border-radius: 3px;
-    // background: #fff;
-    // border: 1px ${props => (props.isDragging ? 'dashed #4099ff' : 'solid #ddd')};
-`;
-
-const Clone = styled(DraggableToolbarBlock)`
-    + div {
-        display: none !important;
-    }
-`;
-
-// function getStyles(style, snapshot) {
-//     if (!snapshot.isDropAnimating) {
-//       return style;
-//     }
-//     return {
-//       ...style,
-//       // cannot be 0, but make it super tiny
-//       transitionDuration: `0.001s`,
-//     };
-//   }
+const useStyles = makeStyles({
+  container: {
+    border: "2px solid indigo",
+    padding: "20px",
+    backgroundColor: "white",
+    margin: "5px",
+    textAlign: "center",
+  }
+});
 
 function ToolbarBlock(props) {
-    const dispatch = useDispatch();
-    const { type, index } = props;
-    return (
-        <Draggable draggableId={type} index={index} key = {type}>
-        { (provided, snapshot) => (
-            <React.Fragment>
-            <div>
-                <DraggableToolbarBlock 
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    isDragging={snapshot.isDragging}
-                >
-                    <BlockContent {...props} />
-                </DraggableToolbarBlock>
-                </div>
-                {
-                    snapshot.isDragging && (
-                        <Clone>
-                            CLONE
-                        </Clone>
-                    )
-                }
-            </React.Fragment>
-            
-        )}
-        
-        </Draggable>
-    );
+  const { type, index } = props;
+  const classes = useStyles();
+
+  return (
+    <Draggable draggableId={type} index={index} key={type}>
+      {(provided, snapshot) => (
+        <React.Fragment>
+          <div>
+            <div
+              className={classes.container}
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              isDragging={snapshot.isDragging}
+            >
+              <BlockContent {...props} />
+            </div>
+          </div>
+          {snapshot.isDragging && (
+            <div className={classes.container}>
+              <BlockContent {...props} />
+            </div>
+          )}
+        </React.Fragment>
+      )}
+    </Draggable>
+  );
 }
 
 export default ToolbarBlock;

@@ -1,5 +1,33 @@
 import { BLOCK_TYPES } from "../constants/blockTypes";
 
+export const updateBlockObject = (orig, updates) => {
+    return {
+        ...orig,
+        ...updates,
+        data: {
+            ...orig.data,
+            ...updates.data
+        }
+    }
+}
+
+export const updateStaticContentOfBlock = (block, value) => {
+    let updated = {};
+    if (block.type === BLOCK_TYPES.IMAGE){
+        updated = updateBlockObject(block, {
+            data: {
+                path: value
+            }
+        })       
+    }else{
+        updated = updateBlockObject(block, {
+            data: { content: value }
+        })
+
+    }
+    return updated;
+}
+
 export const loadSourceIntoBlockData = (block, source) => {
     switch (block.type) {
         case BLOCK_TYPES.HEADLINE:

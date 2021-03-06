@@ -1,56 +1,41 @@
-import { faFile } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Dialog, DialogTitle, DialogActions, List, ListItem, ListItemAvatar, ListItemText, Avatar } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
-
-// const reports = [0, 1, 2, 3, 4];
+import { Button, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import DialogOpenReportFileList from "./DialogOpenReportFileList";
 
 function DialogOpenReport(props) {
-  const { onClose, selectedValue, open, reports } = props;
-  const [ current, setCurrent ] =  useState(selectedValue)
+  const { onClose, open, reports } = props;
+  const [ filename, setFilename ] = useState(null);
 
-  const handleClose = () => {
-    onClose(selectedValue);
+  useEffect(() => {
+    closeDialog()
+  }, [filename])
+
+  const closeDialog = () => {
+    onClose(filename);
   };
 
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
-
-  const renderList = () => {
-    if (!reports) {
-      return null;
-    } else {
-      return reports.map((report) => (
-        <ListItem
-          button
-          onClick={() => handleListItemClick(report.id)}
-          key={report.id}
-        >
-          <ListItemAvatar>
-            <Avatar>
-              <FontAwesomeIcon icon={faFile} />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={report.name} />
-        </ListItem>
-      ))
-    }
+  const selectAndClose = filename => {
+    setFilename(filename);
   }
+
   return (
     <Dialog
-      onClose={handleClose}
-      aria-labelledby="dialog-open"
+      onClose={closeDialog}
+      aria-labelledby="dialog-open-file"
       open={open}
       maxWidth="xs"
       fullWidth
+      style={{overflow: 'hidden'}}
     >
-      <DialogTitle id="dialog-open">Open Report</DialogTitle>
-      <List>
-        {renderList()}
-      </List>
+      <DialogTitle id="dialog-open-file">Open Report</DialogTitle>
+      <DialogOpenReportFileList
+        handleItemSelect={selectAndClose}
+        reports={reports}
+      />
       <DialogActions>
-      <Button onClick={() => onClose(current)} color="primary">Cancel</Button>
+        <Button onClick={closeDialog} color="primary">
+          Cancel
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -1,4 +1,7 @@
-import { faBars, faChevronCircleRight, faEllipsisH, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faChevronCircleRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   AppBar,
@@ -12,9 +15,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import DialogOpenReport from './DialogOpenReport';
-import { OPEN_REPORT } from "../constants/actions";
-import { asyncOpenReport, openReport } from "../actions";
+import DialogOpenReport from "./DialogOpenReport";
+import { asyncOpenReport, asyncSaveReport, asyncSaveReportAs, saveReport } from "../actions";
 import DialogSaveReport from "./DialogSaveReport";
 import printJS from "print-js";
 
@@ -22,12 +24,12 @@ const useStyles = makeStyles({
   root: {
     paddingLeft: "15px",
     paddingRight: "15px",
-    position: "inherit"
+    position: "inherit",
   },
   title: {
     flexGrow: 1,
-    textAlign: "left"
-  }
+    textAlign: "left",
+  },
 });
 
 function AppMenu(props) {
@@ -38,13 +40,15 @@ function AppMenu(props) {
       .then((res) => setReports(res.data));
   });
   const classes = useStyles();
-  const reportMeta = useSelector((state) => state.reportMeta);
   const report = useSelector((state) => state.report);
+  const blocks = useSelector((state) => state.blocks);
   const dispatch = useDispatch();
 
   const [anchorMenu, setAnchorMenu] = React.useState(null);
   const [openDialogVisibility, setOpenDialogVisibility] = React.useState(false);
-  const [saveAsDialogVisibility, setSaveAsDialogVisibility] = React.useState(false);
+  const [saveAsDialogVisibility, setSaveAsDialogVisibility] = React.useState(
+    false
+  );
 
   const handleClick = (event) => {
     setAnchorMenu(event.currentTarget);
@@ -56,24 +60,20 @@ function AppMenu(props) {
 
   const saveReport = () => {
     const reportData = {
-      name: reportMeta.name,
-      report: JSON.stringify([...report]),
+      name: report.name,
+      data: JSON.stringify([...blocks]),
     };
-    axios
-      .put("http://localhost:5000/api/save", reportData)
-      .then((res) => console.log(res.data));
     closeMenu();
+    dispatch(asyncSaveReport(reportData));
   };
 
   const saveReportAs = (filename) => {
     const reportData = {
       name: filename,
-      report: JSON.stringify([...report]),
+      data: JSON.stringify([...blocks]),
     };
-    axios
-      .post("http://localhost:5000/api/save", reportData)
-      .then((res) => console.log(res.data));
     closeMenu();
+    dispatch(asyncSaveReportAs(reportData));
   };
 
   const openDialogOpenReport = (event) => {
@@ -83,29 +83,29 @@ function AppMenu(props) {
   const closeDialogOpenReport = (value) => {
     setOpenDialogVisibility(false);
     closeMenu();
-    dispatch(asyncOpenReport(value))
+    if (value) dispatch(asyncOpenReport(value));
   };
 
-  const openDialogSaveAs = (event) => {
+  const openDialogSaveAs = () => {
     setSaveAsDialogVisibility(true);
   };
 
   const closeDialogSaveAs = (value) => {
     setSaveAsDialogVisibility(false);
     if (value) saveReportAs(value);
-    // closeMenu();
-    // dispatch(asyncOpenReport(value))
+    closeMenu();
   };
 
   const printReport = () => {
-    printJS('print-report', 'html');
-  }
+    printJS("print-report", "html");
+  };
 
   return (
     <AppBar className={classes.root}>
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
-          report-editor <FontAwesomeIcon icon={faChevronCircleRight} /> { reportMeta.name }
+          report-editor <FontAwesomeIcon icon={faChevronCircleRight} />{" "}
+          {report.name}
         </Typography>
         <IconButton
           edge="start"
@@ -131,18 +131,17 @@ function AppMenu(props) {
           <MenuItem onClick={printReport}>Print (or to PDF)</MenuItem>
         </Menu>
       </Toolbar>
-      <DialogOpenReport selectedValue={1} open={openDialogVisibility} onClose={closeDialogOpenReport} reports={reports}/>
-      <DialogSaveReport open={saveAsDialogVisibility} onClose={closeDialogSaveAs}/>
+      <DialogOpenReport
+        open={openDialogVisibility}
+        onClose={closeDialogOpenReport}
+        reports={reports}
+      />
+      <DialogSaveReport
+        open={saveAsDialogVisibility}
+        onClose={closeDialogSaveAs}
+      />
     </AppBar>
   );
 }
 
 export default AppMenu;
-
-// <Box bgcolor="rgb(200, 200, 200)" textAlign="left" letterSpacing="20px">
-//         <ButtonGroup variant="text" color="default" aria-label="text default button group">
-//           <Button classes={{ root: classes.root }}>File</Button>
-//           <Button classes={{ root: classes.root }}>View</Button>
-//           <Button classes={{ root: classes.root }}>About</Button>
-//         </ButtonGroup>
-//       </Box>

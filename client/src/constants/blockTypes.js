@@ -10,7 +10,6 @@ export const BLOCK_TYPE_SOURCE = {
     IMAGE: 'images',
 }
 
-
 export const DEFAULT_BLOCKS = [
     {
         type: BLOCK_TYPES.HEADLINE,

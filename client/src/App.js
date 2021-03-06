@@ -1,21 +1,11 @@
-import './App.css';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBlock, reorderBlock, selectBlock } from './actions';
 import Toolbar from './components/Toolbar';
-import styled from 'styled-components';
 import BlockProperties from './components/BlockProperties';
 import ReportContainer from './components/ReportContainer';
-import AppMenu from './components/AppMenu';
-import Toolbar2 from './components/Toolbar2';
-import { Grid, makeStyles } from '@material-ui/core';
-
-const Application = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: 100px auto 200px;
-`;
+import AppHeader from './components/AppHeader';
+import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {
@@ -23,14 +13,15 @@ const useStyles = makeStyles({
     height: "100vh",
     width: "100vw",
     gridTemplateColumns: "100px auto 200px",
-    gridTemplateRows: "auto 100%",
+    gridTemplateRows: "60px auto",
     gridTemplateAreas: "'appbar appbar appbar' 'toolbar report block'"
   },
   appbar: {
     gridArea: "appbar"
   },
   toolbar: {
-    gridArea: "toolbar"
+    gridArea: "toolbar",
+    backgroundColor: "white"
   },
   report: {
     gridArea: "report",
@@ -44,14 +35,10 @@ const useStyles = makeStyles({
 function App() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const report = useSelector(state => state.report);
-
-  const handleDrag = res => {
-    // console.log(res)
-  }
+  const blocks = useSelector(state => state.blocks);
 
   const handleDrop = result => {
-    dispatch(selectBlock(report[result.source.index]));
+    dispatch(selectBlock(blocks[result.source.index]));
     if (result.destination === null) return;
     if (result.destination.droppableId === 'report'){
       if (result.source.droppableId === 'report') {
@@ -63,10 +50,10 @@ function App() {
   }
 
   return (
-    <DragDropContext onDragStart={handleDrag} onDragEnd={handleDrop}>
+    <DragDropContext onDragEnd={handleDrop}>
     <div className={classes.container}>
       <div className={classes.appbar}>
-        <AppMenu />
+        <AppHeader />
       </div>
       <div className={classes.toolbar}>
         <Toolbar />
@@ -84,22 +71,3 @@ function App() {
 }
 
 export default App;
-
-
-// <DragDropContext onDragStart={handleDrag} onDragEnd={handleDrop}>
-// <Grid container spacing={0}>
-//   <Grid item xs={12}>
-//     <AppMenu />
-//   </Grid>
-//   <Grid item xs={1}>
-//     <Toolbar />
-//   </Grid>
-//   <Grid item xs={8}>
-//     <ReportContainer />
-//   </Grid>
-//   <Grid item xs={3}>
-//     <BlockProperties />
-//   </Grid>
-// </Grid>
-
-// </DragDropContext>

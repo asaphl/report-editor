@@ -1,4 +1,6 @@
 export const OPEN_REPORT = 'OPEN_REPORT';
+export const SAVE_REPORT = 'SAVE_REPORT';
+export const SAVE_REPORT_AS = 'SAVE_REPORT_AS';
 export const REORDER_BLOCK = 'REORDER_BLOCK';
 export const ADD_BLOCK = 'ADD_BLOCK';
 export const SELECT_BLOCK = 'SELECT_BLOCK';

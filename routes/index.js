@@ -86,7 +86,7 @@ router.post("/api/save", (req, res) => {
   const sql = `INSERT INTO Reports(Name, Data) VALUES('${
     req.body.name
   }', '${req.body.data.replace("'", "''")}')`;
-  db.run(sql, function (err) {
+  db.run(sql, function(err) {
     if (err) res.send(err.message);
     res.send(this.lastID.toString());
   });
@@ -97,7 +97,7 @@ router.put("/api/save", (req, res) => {
   // res.send(sql)
   db.run(sql, (err) => {
     if (err) res.send(err.message);
-    res.send(200);
+    res.sendStatus(200);
   });
 });
 

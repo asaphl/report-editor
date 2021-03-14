@@ -1,4 +1,4 @@
-import { OPEN_REPORT, SAVE_REPORT } from "../constants/actions";
+import { NEW_REPORT, OPEN_REPORT, SAVE_REPORT } from "../constants/actions";
 
 const initState = {
   id: "0",
@@ -7,6 +7,11 @@ const initState = {
 
 export default function reportReducer(state = initState, action) {
   switch (action.type) {
+    case NEW_REPORT:
+      return {
+        id: "",
+        name: ""
+      }
     case OPEN_REPORT:
       return {
         id: action.payload.id,

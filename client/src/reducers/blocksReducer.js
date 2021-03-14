@@ -2,6 +2,7 @@ import { DEFAULT_BLOCKS } from "../constants/blockTypes";
 import { v4 as uuid } from "uuid";
 import {
   ADD_BLOCK,
+  NEW_REPORT,
   OPEN_REPORT,
   REMOVE_BLOCK,
   REORDER_BLOCK,
@@ -30,6 +31,8 @@ const initState = [
 export default function blocksReducer(state = initState, action) {
   let newState = Array.from(state);
   switch (action.type) {
+    case NEW_REPORT:
+      return [];
     case OPEN_REPORT:
       newState = JSON.parse(action.payload.data);
       return newState;

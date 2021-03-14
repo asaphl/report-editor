@@ -1,3 +1,4 @@
+export const NEW_REPORT = 'NEW_REPORT';
 export const OPEN_REPORT = 'OPEN_REPORT';
 export const SAVE_REPORT = 'SAVE_REPORT';
 export const SAVE_REPORT_AS = 'SAVE_REPORT_AS';

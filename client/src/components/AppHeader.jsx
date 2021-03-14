@@ -16,7 +16,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import DialogOpenReport from "./DialogOpenReport";
-import { asyncOpenReport, asyncSaveReport, asyncSaveReportAs, saveReport } from "../actions";
+import { asyncOpenReport, asyncSaveReport, asyncSaveReportAs, newReport } from "../actions";
 import DialogSaveReport from "./DialogSaveReport";
 import printJS from "print-js";
 
@@ -57,6 +57,10 @@ function AppMenu(props) {
   const closeMenu = () => {
     setAnchorMenu(null);
   };
+
+  const openNewReport = () => {
+    dispatch(newReport());
+  }
 
   const saveReport = () => {
     const reportData = {
@@ -125,6 +129,7 @@ function AppMenu(props) {
           open={Boolean(anchorMenu)}
           onClose={closeMenu}
         >
+          <MenuItem onClick={openNewReport}>New Report</MenuItem>
           <MenuItem onClick={openDialogOpenReport}>Open Report</MenuItem>
           <MenuItem onClick={saveReport}>Save Report</MenuItem>
           <MenuItem onClick={openDialogSaveAs}>Save As...</MenuItem>

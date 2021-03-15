@@ -4,6 +4,7 @@ import { updateSelectedBlock } from "../../actions";
 import { updateBlockObject } from "../../utils/blockFunctions";
 import axios from 'axios';
 import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
+import REMOTE_SERVER from "../../constants/server";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

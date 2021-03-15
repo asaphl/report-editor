@@ -7,7 +7,7 @@ const apiGetImagesByCountry = (req, res) => {
       const images = data.map((row) => {
         return {
           ...row,
-          path: req.protocol + "://" + req.get("host") + "/" + row["path"],
+          path: req.protocol + "://" + req.get("host") + "/images/" + row["path"],
         };
       });
       res.send(images);

@@ -21,7 +21,7 @@ function DatasourceDynamicCountry(props) {
   const [countries, setCountries] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/countries`)
+      .get(`${REMOTE_SERVER}api/countries`)
       .then((res) => setCountries(res.data));
   }, []);
 

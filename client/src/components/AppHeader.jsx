@@ -19,6 +19,7 @@ import DialogOpenReport from "./DialogOpenReport";
 import { asyncOpenReport, asyncSaveReport, asyncSaveReportAs, newReport } from "../actions";
 import DialogSaveReport from "./DialogSaveReport";
 import printJS from "print-js";
+import REMOTE_SERVER from "../constants/server";
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +37,7 @@ function AppMenu(props) {
   const [reports, setReports] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/reports")
+      .get(REMOTE_SERVER + "api/reports")
       .then((res) => setReports(res.data));
   });
   const classes = useStyles();

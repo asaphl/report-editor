@@ -1,18 +1,15 @@
-const query = require("./query");
+const queryDB = require("../db/queryDB");
 
-const apiGetImagesByCountry = (req, res) => {
+async function apiGetImagesByCountry(req, res) {
   const sql = `SELECT * FROM "Images" LEFT JOIN "CountryImages" ON "Images"."id" = "CountryImages"."imageId" WHERE "CountryImages"."countryId" = '${req.params.countryId}';`;
-  query(sql)
-    .then((data) => {
-      const images = data.map((row) => {
-        return {
-          ...row,
-          path: req.protocol + "://" + req.get("host") + "/images/" + row["path"],
-        };
-      });
-      res.send(images);
-    })
-    .catch((rejected) => res.send(rejected));
+  const results = await queryDB(sql);
+  const images = results.map((row) => {
+    return {
+      ...row,
+      path: req.protocol + "://" + req.get("host") + "/images/" + row["path"],
+    }
+  });
+  res.send(images);
 };
 
 module.exports = apiGetImagesByCountry;

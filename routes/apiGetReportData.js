@@ -1,10 +1,9 @@
-const query = require("./query");
+const queryDB = require("../db/queryDB");
 
-const apiGetReportData = (req, res) => {
+async function apiGetReportData(req, res) {
   const sql = `SELECT * FROM "Reports" WHERE "id"='${req.params.reportId}';`;
-  query(sql)
-    .then((data) => res.status(200).json(data))
-    .catch((rejected) => res.send(rejected));
+  const results = await queryDB(sql);
+  res.status(200).json(results);
 };
 
 module.exports = apiGetReportData;

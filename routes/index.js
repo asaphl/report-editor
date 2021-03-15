@@ -10,17 +10,4 @@ router.get("/api/reports/:reportId", api.getReportData);
 router.post("/api/save", api.createReport);
 router.put("/api/save", api.updateReport);
 
-// router.all("/api/countries/:countryId/datasets", (req, res) => {
-//   const sql = `SELECT Datasets.* FROM Datasets LEFT JOIN [Country Datasets] ON Datasets.Id = [Country Datasets].DatasetId WHERE CountryId = '${req.params.countryId}'`;
-//   queryAll(sql).then((rows) => {
-//     const formattedRows = rows.map((row) => {
-//       return {
-//         ...row,
-//         data: parseCsv(row["data"]),
-//       };
-//     });
-//     res.send(formattedRows);
-//   });
-// });
-
 module.exports = router;

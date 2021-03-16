@@ -7,7 +7,7 @@ import {
   UPDATE_SELECTED_BLOCK,
   OPEN_REPORT,
   SAVE_REPORT,
-  NEW_REPORT
+  NEW_REPORT,
 } from "../constants/actions";
 
 export const asyncOpenReport = (reportId) => (dispatch, getState, axios) =>
@@ -48,9 +48,9 @@ export const saveReport = (report) => {
 
 export const newReport = () => {
   return {
-    type: NEW_REPORT
-  }
-}
+    type: NEW_REPORT,
+  };
+};
 
 export const reorderBlock = (blockId, sourceIndex, destinationIndex) => {
   return {

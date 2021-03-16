@@ -16,7 +16,12 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import DialogOpenReport from "./DialogOpenReport";
-import { asyncOpenReport, asyncSaveReport, asyncSaveReportAs, newReport } from "../actions";
+import {
+  asyncOpenReport,
+  asyncSaveReport,
+  asyncSaveReportAs,
+  newReport,
+} from "../actions";
 import DialogSaveReport from "./DialogSaveReport";
 import printJS from "print-js";
 
@@ -35,9 +40,7 @@ const useStyles = makeStyles({
 function AppMenu(props) {
   const [reports, setReports] = useState([]);
   useEffect(() => {
-    axios
-      .get("api/reports")
-      .then((res) => setReports(res.data));
+    axios.get("api/reports").then((res) => setReports(res.data));
   }, []);
   const classes = useStyles();
   const report = useSelector((state) => state.report);
@@ -60,7 +63,7 @@ function AppMenu(props) {
 
   const openNewReport = () => {
     dispatch(newReport());
-  }
+  };
 
   const saveReport = () => {
     const reportData = {

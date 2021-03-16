@@ -5,7 +5,6 @@ import { loadSourceIntoBlockData } from "../../utils/blockFunctions";
 import { BLOCK_TYPE_SOURCE } from '../../constants/blockTypes';
 import axios from 'axios';
 import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
-import REMOTE_SERVER from "../../constants/server";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,7 +26,7 @@ function DatasourceDynamicSource(props) {
     if (!selectedCountry) return;
     axios
       .get(
-        `${REMOTE_SERVER}api/countries/${selectedCountry}/${
+        `api/countries/${selectedCountry}/${
           BLOCK_TYPE_SOURCE[selectedBlock.type]
         }`
       )

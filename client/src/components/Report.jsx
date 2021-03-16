@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Block from "./Block";
 import { Droppable } from "react-beautiful-dnd";
-import { Box, makeStyles, Paper } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
   emptyDocument: {

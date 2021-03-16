@@ -1,6 +1,6 @@
 import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 import { DEFAULT_BLOCKS } from "../constants/blockTypes";
 import ToolbarBlock from "./ToolbarBlock";
 

@@ -9,18 +9,17 @@ import {
   SAVE_REPORT,
   NEW_REPORT
 } from "../constants/actions";
-import REMOTE_SERVER from "../constants/server";
 
 export const asyncOpenReport = (reportId) => (dispatch, getState, axios) =>
   axios
-    .get(`/api/reports/${reportId}`)
+    .get(`api/reports/${reportId}`)
     .then((res) => dispatch(openReport(res.data[0])));
 
 export const asyncSaveReport = (report) => (dispatch, getState, axios) =>
-  axios.put(REMOTE_SERVER + "api/save", report);
+  axios.put("api/save", report);
 
 export const asyncSaveReportAs = (report) => (dispatch, getState, axios) =>
-  axios.post(REMOTE_SERVER + "api/save", report).then((res) => {
+  axios.post("api/save", report).then((res) => {
     dispatch(
       saveReport({
         name: report.name,

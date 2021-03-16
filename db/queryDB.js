@@ -1,14 +1,12 @@
-const client = require("../db");
+const db = require("../db");
 
 async function queryDB(sql) {
-  client.connect();
+  db.connect();
   return new Promise(resolve => (
-    client
+    db
     .query(sql)
-    .then((data) => {
-      resolve(data.rows);
-    })
-    .catch((err) => console.log(err))
+    .then(data => resolve(data.rows))
+    .catch(err => console.log(err))
   ));
 }
 
